@@ -25,7 +25,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        osnick: [xenial, bionic, focal]
+        osnick: [xenial, bionic, focal, bullseye]
         arch: [x86_64]
 
     steps:
