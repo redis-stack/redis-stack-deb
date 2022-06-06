@@ -5,25 +5,14 @@ on:
     tags:
       - '*'
 
-env:
-  pythonversion: 3.9
-  rubyversion: 2.7.2
-
-  # Path to the S3 bucket containing our pre-build packages
-  s3root: s3://redismodules/redis-stack
-
-  # Name of the s3 bucket within the account, used to publish our feeds
-  # eg: redismodules
-  s3publicreponame: packages.redis.io
-
 jobs:
 
   bulleye-x86:
     uses: ./.github/workflows/RELEASE_REUSE.yml
     with:
       osnick: bulleye
-      s3root: ${env.s3root}
-      s3publicreponame: ${env.s3publicreponame}
+      s3root: s3://redismodules/redis-stack
+      s3publicreponame: packages.redis.io
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
@@ -37,8 +26,8 @@ jobs:
     uses: ./.github/workflows/RELEASE_REUSE.yml
     with:
       osnick: xenial
-      s3root: ${env.s3root}
-      s3publicreponame: ${env.s3publicreponame}
+      s3root: s3://redismodules/redis-stack
+      s3publicreponame: packages.redis.io
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
@@ -51,8 +40,8 @@ jobs:
     uses: ./.github/workflows/RELEASE_REUSE.yml
     with:
       osnick: bionic
-      s3root: ${env.s3root}
-      s3publicreponame: ${env.s3publicreponame}
+      s3root: s3://redismodules/redis-stack
+      s3publicreponame: packages.redis.io
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
@@ -65,8 +54,8 @@ jobs:
     uses: ./.github/workflows/RELEASE_REUSE.yml
     with:
       osnick: focal
-      s3root: ${env.s3root}
-      s3publicreponame: ${env.s3publicreponame}
+      s3root: s3://redismodules/redis-stack
+      s3publicreponame: packages.redis.io
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
@@ -80,8 +69,8 @@ jobs:
     with:
       osnick: bionic
       arch: amd64
-      s3root: ${env.s3root}
-      s3publicreponame: ${env.s3publicreponame}
+      s3root: s3://redismodules/redis-stack
+      s3publicreponame: packages.redis.io
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
