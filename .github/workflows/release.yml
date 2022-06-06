@@ -17,81 +17,65 @@ env:
   s3publicreponame: packages.redis.io
 
 jobs:
-  publish_debs:
-    name: Publish Debian [${{ matrix.osnick }}] Feed
-    runs-on: ubuntu-latest
 
-    # limitation in deb s3
-    strategy:
-      max-parallel: 1
-      matrix:
-        osnick: [xenial, bionic, focal]
-        arch: [x86_64]
+  bulleye-x86:
+    uses: ./.github/workflows/RELEASE_REUSE.yml
+    with:
+      osnick: bulleye
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      PACKAGES_AWS_ACCESS_KEY_ID: ${{secrets.PACKAGES_AWS_ACCESS_KEY_ID}}
+      PACKAGES_AWS_ACCESS_KEY_ID: ${{secrets.PACKAGES_AWS_ACCESS_KEY_ID}}
+      GPG_PASSWORD: ${{secrets.GPG_PASSWORD}}
+      GPG_KEY: ${{secrets.GPG_KEY}}
 
-    steps:
-      - name: get version from tag
-        id: get_tag_version
-        run: |
-          realversion="${GITHUB_REF/refs\/tags\//}"
-          echo "::set-output name=VERSION::$realversion"
-      - uses: actions/checkout@v2
-        with:
-          repository: redis-stack/redis-stack
-          ref: ${{steps.get_tag_version.outputs.VERSION}}
 
-      - name: install python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{env.pythonversion}}
-      - uses: ruby/setup-ruby@v1
-      - name: install package tools
-        run: |
-          gem install deb-s3
-      - name: install poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: latest
-          virtualenvs-in-project: true
-          virtualenvs-create: true
-          installer-parallel: true
-      - name: get package version
-        id: get_version
-        run: |
-          poetry install
-          source .venv/bin/activate
-          realversion=`invoke version -p redis-stack-server -d true`
-          echo "::set-output name=VERSION::$realversion"
-      - uses: s3-actions/s3cmd@v1.1
-        with:
-          provider: aws
-          region: us-east-1
-          access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  xenial-x86:
+    uses: ./.github/workflows/RELEASE_REUSE.yml
+    with:
+      osnick: xenial
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      PACKAGES_AWS_ACCESS_KEY_ID: ${{secrets.PACKAGES_AWS_ACCESS_KEY_ID}}
+      PACKAGES_AWS_ACCESS_KEY_ID: ${{secrets.PACKAGES_AWS_ACCESS_KEY_ID}}
+      GPG_PASSWORD: ${{secrets.GPG_PASSWORD}}
+      GPG_KEY: ${{secrets.GPG_KEY}}
 
-      - name: install gpg key
-        run: |
-          cat <(echo -e "${{ secrets.GPG_KEY }}") | gpg --batch --import
-      - name: get gpg_keygrip
-        id: get_gpg_keygrip
-        run: |
-          keygrip=`gpg -k --with-keygrip |sed -n 5p|cut -d '=' -f 2-2`
-          echo "::set-output name=GPG_KEYGRIP::$keygrip"
+  bionic-x86:
+    uses: ./.github/workflows/RELEASE_REUSE.yml
+    with:
+      osnick: bionic
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      PACKAGES_AWS_ACCESS_KEY_ID: ${{secrets.PACKAGES_AWS_ACCESS_KEY_ID}}
+      PACKAGES_AWS_ACCESS_KEY_ID: ${{secrets.PACKAGES_AWS_ACCESS_KEY_ID}}
+      GPG_PASSWORD: ${{secrets.GPG_PASSWORD}}
+      GPG_KEY: ${{secrets.GPG_KEY}}
 
-      - name: publish debs
-        run: |
-          s3cmd get ${{env.s3root}}/*${{ steps.get_version.outputs.VERSION }}*${{ matrix.osnick }}*${{ matrix.arch }}.deb .
-          echo allow-preset-passphrase > ~/.gnupg/gpg-agent.conf
-          gpg-connect-agent reloadagent /bye
-          /usr/lib/gnupg/gpg-preset-passphrase -P '${{ secrets.GPG_PASSWORD }}' -c --preset ${{ steps.get_gpg_keygrip.outputs.GPG_KEYGRIP }}
-          deb-s3 upload --s3-region us-east-2 \
-            --bucket ${{env.s3publicreponame}} \
-            --codename ${{ matrix.osnick }} \
-            --preserve-versions \
-            --fail-if-exists \
-            --sign \
-            --prefix \
-            deb \
-            *${{ matrix.osnick }}*.deb
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.PACKAGES_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY : ${{ secrets.PACKAGES_AWS_SECRET_ACCESS_KEY}}
+  focal-x86:
+    uses: ./.github/workflows/RELEASE_REUSE.yml
+    with:
+      osnick: focal
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      PACKAGES_AWS_ACCESS_KEY_ID: ${{secrets.PACKAGES_AWS_ACCESS_KEY_ID}}
+      PACKAGES_AWS_ACCESS_KEY_ID: ${{secrets.PACKAGES_AWS_ACCESS_KEY_ID}}
+      GPG_PASSWORD: ${{secrets.GPG_PASSWORD}}
+      GPG_KEY: ${{secrets.GPG_KEY}}
+
+  bionic-arm64:
+    uses: ./.github/workflows/RELEASE_REUSE.yml
+    with:
+      osnick: bionic
+      arch: amd64
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      PACKAGES_AWS_ACCESS_KEY_ID: ${{secrets.PACKAGES_AWS_ACCESS_KEY_ID}}
+      PACKAGES_AWS_ACCESS_KEY_ID: ${{secrets.PACKAGES_AWS_ACCESS_KEY_ID}}
+      GPG_PASSWORD: ${{secrets.GPG_PASSWORD}}
+      GPG_KEY: ${{secrets.GPG_KEY}}
