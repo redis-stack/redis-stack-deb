@@ -6,7 +6,7 @@ on:
         required: true
       arch:
         type: string
-        required: true
+        required: false
         default: x86_64
       rubyversion:
         default: 2.7.2
