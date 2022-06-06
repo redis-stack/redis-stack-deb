@@ -95,7 +95,6 @@ jobs:
             --bucket ${{env.s3publicreponame}} \
             --codename ${{ matrix.osnick }} \
             --preserve-versions \
-            --fail-if-exists \
             --sign \
             --prefix \
             deb \
