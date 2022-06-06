@@ -4,6 +4,12 @@ on:
       osnick:
         type: string
         required: true
+      s3root:
+        type: string
+        required: true
+      s3publicreponame:
+        type: string
+        required: true
       arch:
         type: string
         required: false
@@ -87,12 +93,12 @@ jobs:
 
       - name: publish debs
         run: |
-          s3cmd get ${{env.s3root}}/*${{ steps.get_version.outputs.VERSION }}*${{ matrix.osnick }}*${{ matrix.arch }}.deb .
+          s3cmd get ${{inputs.s3root}}/*${{ steps.get_version.outputs.VERSION }}*${{ matrix.osnick }}*${{ matrix.arch }}.deb .
           echo allow-preset-passphrase > ~/.gnupg/gpg-agent.conf
           gpg-connect-agent reloadagent /bye
           /usr/lib/gnupg/gpg-preset-passphrase -P '${{ secrets.GPG_PASSWORD }}' -c --preset ${{ steps.get_gpg_keygrip.outputs.GPG_KEYGRIP }}
           deb-s3 upload --s3-region us-east-2 \
-            --bucket ${{env.s3publicreponame}} \
+            --bucket ${{inputs.s3publicreponame}} \
             --codename ${{ matrix.osnick }} \
             --preserve-versions \
             --sign \

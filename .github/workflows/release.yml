@@ -22,6 +22,8 @@ jobs:
     uses: ./.github/workflows/RELEASE_REUSE.yml
     with:
       osnick: bulleye
+      s3root: ${env.s3root}
+      s3publicreponame: ${env.s3publicreponame}
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
@@ -35,6 +37,8 @@ jobs:
     uses: ./.github/workflows/RELEASE_REUSE.yml
     with:
       osnick: xenial
+      s3root: ${env.s3root}
+      s3publicreponame: ${env.s3publicreponame}
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
@@ -47,6 +51,8 @@ jobs:
     uses: ./.github/workflows/RELEASE_REUSE.yml
     with:
       osnick: bionic
+      s3root: ${env.s3root}
+      s3publicreponame: ${env.s3publicreponame}
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
@@ -59,6 +65,8 @@ jobs:
     uses: ./.github/workflows/RELEASE_REUSE.yml
     with:
       osnick: focal
+      s3root: ${env.s3root}
+      s3publicreponame: ${env.s3publicreponame}
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
@@ -72,6 +80,8 @@ jobs:
     with:
       osnick: bionic
       arch: amd64
+      s3root: ${env.s3root}
+      s3publicreponame: ${env.s3publicreponame}
     secrets:
       AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
       AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
