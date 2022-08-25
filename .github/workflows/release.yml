@@ -1,4 +1,4 @@
-name: Publish RPMs
+name: Publish DEBs
 
 on:
   push:
