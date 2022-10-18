@@ -7,10 +7,10 @@ on:
 
 jobs:
 
-  bulleye-x86:
+  bullseye-x86:
     uses: ./.github/workflows/RELEASE_REUSE.yml
     with:
-      osnick: bulleye
+      osnick: bullseye
       s3root: s3://redismodules/redis-stack
       s3publicreponame: packages.redis.io
     secrets:
