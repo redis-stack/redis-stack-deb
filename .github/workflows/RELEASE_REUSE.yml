@@ -85,11 +85,18 @@ jobs:
       - name: install gpg key
         run: |
           cat <(echo -e "${{ secrets.GPG_KEY }}") | gpg --batch --import
+
       - name: get gpg_keygrip
         id: get_gpg_keygrip
         run: |
           keygrip=`gpg -k --with-keygrip |sed -n 5p|cut -d '=' -f 2-2`
           echo "::set-output name=GPG_KEYGRIP::$keygrip"
+
+      - name: get gpg_id
+        id: get_gpg_id
+        run: |
+          gpg_id=`gpg --list-keys|sed -n 4p|awk '{print $1}'`
+          echo "GPG_ID=$gpg_id" >> $GITHUB_OUTPUT
 
       - name: publish debs
         run: |
@@ -101,7 +108,7 @@ jobs:
             --bucket ${{inputs.s3publicreponame}} \
             --codename ${{ inputs.osnick }} \
             --preserve-versions \
-            --sign \
+            --sign ${{steps.get_gpg_id.outputs.GPG_ID}} \
             --prefix \
             deb \
             *${{ inputs.osnick }}*.deb
