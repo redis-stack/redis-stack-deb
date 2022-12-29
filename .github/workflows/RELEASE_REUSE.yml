@@ -105,7 +105,7 @@ jobs:
       - name: publish debs
         run: |
           s3cmd get ${{inputs.s3root}}/redis-stack-server-7.0.6-RC2.${{ inputs.osnick }}.${{ inputs.arch }}.deb \
-            ${{inputs.s3root}}/redis-stack-server-7.0.6-RC2.${{ inputs.osnick }}.${{ inputs.dest_arch }}.deb
+            redis-stack-server-7.0.6-RC2.${{ inputs.osnick }}.${{ inputs.dest_arch }}.deb
           ls
 #          echo allow-preset-passphrase > ~/.gnupg/gpg-agent.conf
 #          gpg-connect-agent reloadagent /bye
