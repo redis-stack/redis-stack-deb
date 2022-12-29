@@ -51,7 +51,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: redis-stack/redis-stack
-          ref: ${{steps.get_tag_version.outputs.VERSION}}
+          ref: master #${{steps.get_tag_version.outputs.VERSION}}
 
       - name: install python
         uses: actions/setup-python@v2
