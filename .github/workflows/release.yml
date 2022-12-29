@@ -2,8 +2,8 @@ name: Publish DEBs
 
 on:
   push:
-#    tags:
-#      - '*'
+    tags:
+      - '*'
 
 jobs:
 

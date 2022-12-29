@@ -55,7 +55,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: redis-stack/redis-stack
-          ref: master # ${{steps.get_tag_version.outputs.VERSION}}
+          ref: ${{steps.get_tag_version.outputs.VERSION}}
 
       - name: install python
         uses: actions/setup-python@v2
@@ -107,17 +107,17 @@ jobs:
           s3cmd get ${{inputs.s3root}}/redis-stack-server-7.0.6-RC2.${{ inputs.osnick }}.${{ inputs.arch }}.deb \
             redis-stack-server-7.0.6-RC2.${{ inputs.osnick }}.${{ inputs.dest_arch }}.deb
           ls
-#          echo allow-preset-passphrase > ~/.gnupg/gpg-agent.conf
-#          gpg-connect-agent reloadagent /bye
-#          /usr/lib/gnupg/gpg-preset-passphrase -P '${{ secrets.GPG_PASSWORD }}' -c --preset ${{ steps.get_gpg_keygrip.outputs.GPG_KEYGRIP }}
-#          deb-s3 upload --s3-region us-east-2 \
-#            --bucket ${{inputs.s3publicreponame}} \
-#            --codename ${{ inputs.osnick }} \
-#            --preserve-versions \
-#            --sign ${{steps.get_gpg_id.outputs.GPG_ID}} \
-#            --prefix \
-#            deb \
-#            *${{ inputs.osnick }}*.deb
-#        env:
-#          AWS_ACCESS_KEY_ID: ${{ secrets.PACKAGES_AWS_ACCESS_KEY_ID }}
-#          AWS_SECRET_ACCESS_KEY : ${{ secrets.PACKAGES_AWS_SECRET_ACCESS_KEY}}
+          echo allow-preset-passphrase > ~/.gnupg/gpg-agent.conf
+          gpg-connect-agent reloadagent /bye
+          /usr/lib/gnupg/gpg-preset-passphrase -P '${{ secrets.GPG_PASSWORD }}' -c --preset ${{ steps.get_gpg_keygrip.outputs.GPG_KEYGRIP }}
+          deb-s3 upload --s3-region us-east-2 \
+            --bucket ${{inputs.s3publicreponame}} \
+            --codename ${{ inputs.osnick }} \
+            --preserve-versions \
+            --sign ${{steps.get_gpg_id.outputs.GPG_ID}} \
+            --prefix \
+            deb \
+            *${{ inputs.osnick }}*.deb
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.PACKAGES_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY : ${{ secrets.PACKAGES_AWS_SECRET_ACCESS_KEY}}
