@@ -51,7 +51,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: redis-stack/redis-stack
-          ref: 6.2 #${{steps.get_tag_version.outputs.VERSION}}
+          ref: ${{steps.get_tag_version.outputs.VERSION}}
 
       - name: install python
         uses: actions/setup-python@v2
@@ -104,7 +104,9 @@ jobs:
           if [ ${{inputs.arch}} == "amd64" ]; then
               arch="x86_64"
           fi
-          s3cmd get ${{inputs.s3root}}/*${{ steps.get_version.outputs.VERSION }}*${{ inputs.osnick }}*${arch}.deb .
+          ls
+          s3cmd get ${{inputs.s3root}}/*7.0.6-RC2*${{ inputs.osnick }}*${arch}.deb .
+          ls
           for i in `ls *${arch}*.deb`; do
             mv $i `echo $i|sed -e 's/${arch}/${{inputs.arch}}'`
           done
