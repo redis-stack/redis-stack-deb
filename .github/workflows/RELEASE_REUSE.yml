@@ -108,7 +108,7 @@ jobs:
           s3cmd get ${{inputs.s3root}}/*7.0.6-RC2*${{ inputs.osnick }}*${arch}.deb .
           ls
           for i in `ls *${arch}*.deb`; do
-            mv $i `echo $i|sed -e 's/${arch}/${{inputs.arch}}'`
+            mv $i `echo $i|sed -e 's/${arch}/${{inputs.arch}}/'`
           done
           ls
 #          echo allow-preset-passphrase > ~/.gnupg/gpg-agent.conf
