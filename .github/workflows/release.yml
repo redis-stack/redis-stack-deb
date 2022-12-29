@@ -2,8 +2,8 @@ name: Publish DEBs
 
 on:
   push:
-    tags:
-      - '*'
+#    tags:
+#      - '*'
 
 jobs:
 
@@ -64,10 +64,12 @@ jobs:
       GPG_PASSWORD: ${{secrets.GPG_PASSWORD}}
       GPG_KEY: ${{secrets.GPG_KEY}}
 
+  # until we solve amd64 vs x86_64 forever, this should work
   jammy-x86:
     uses: ./.github/workflows/RELEASE_REUSE.yml
     with:
       osnick: jammy
+      arch: amd64
       s3root: s3://redismodules/redis-stack
       s3publicreponame: packages.redis.io
     secrets:
