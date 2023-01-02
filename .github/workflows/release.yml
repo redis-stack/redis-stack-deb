@@ -11,6 +11,7 @@ jobs:
     uses: ./.github/workflows/RELEASE_REUSE.yml
     with:
       osnick: bullseye
+      dest_arch: amd64
       s3root: s3://redismodules/redis-stack
       s3publicreponame: packages.redis.io
     secrets:
@@ -64,10 +65,12 @@ jobs:
       GPG_PASSWORD: ${{secrets.GPG_PASSWORD}}
       GPG_KEY: ${{secrets.GPG_KEY}}
 
+  # until we solve amd64 vs x86_64 forever, this should work
   jammy-x86:
     uses: ./.github/workflows/RELEASE_REUSE.yml
     with:
       osnick: jammy
+      dest_arch: amd64
       s3root: s3://redismodules/redis-stack
       s3publicreponame: packages.redis.io
     secrets:
@@ -83,6 +86,7 @@ jobs:
     with:
       osnick: bionic
       arch: arm64
+      dest_arch: arm64
       s3root: s3://redismodules/redis-stack
       s3publicreponame: packages.redis.io
     secrets:
@@ -98,6 +102,7 @@ jobs:
     with:
       osnick: focal
       arch: arm64
+      dest_arch: arm64
       s3root: s3://redismodules/redis-stack
       s3publicreponame: packages.redis.io
     secrets:
@@ -113,6 +118,7 @@ jobs:
     with:
       osnick: jammy
       arch: arm64
+      dest_arch: arm64
       s3root: s3://redismodules/redis-stack
       s3publicreponame: packages.redis.io
     secrets:
