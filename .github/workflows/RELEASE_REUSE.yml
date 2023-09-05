@@ -116,6 +116,7 @@ jobs:
             --preserve-versions \
             --sign ${{steps.get_gpg_id.outputs.GPG_ID}} \
             --prefix \
+            --lock \
             deb \
             *${{ inputs.osnick }}*.deb
         env:
