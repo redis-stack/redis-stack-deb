@@ -75,7 +75,7 @@ jobs:
       - name: get package version
         id: get_version
         run: |
-          poetry install
+          poetry install --no-root
           source .venv/bin/activate
           realversion=`invoke version -p redis-stack-server -d true`
           echo "::set-output name=VERSION::$realversion"
